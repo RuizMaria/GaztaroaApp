@@ -8,7 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from './HomeComponent';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Contacto from './ContactoComponent'; 
-
+import QuienesSomos from './QuienesSomosComponent';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -87,6 +87,28 @@ function ContactoNavegar(){
   );
 }
 
+function QuienesSomosNavegador(){
+  return(
+    <Stack.Navigator
+      initialRouteName="QuienesSomos"
+      screenOptions={{
+      headerMode: 'float',
+      headerTintColor: '#fff',
+      headerStyle: { backgroundColor: '#015afc' },
+      headerTitleStyle: { color: '#fff' },
+      }}
+    >
+    <Stack.Screen
+      name = "QuienesSomos"
+      component={QuienesSomos}
+      options={{
+      title: 'Quienes somos',
+      }}
+    /> 
+    </Stack.Navigator>
+  );
+}
+
 function DrawerNavegador() {
   return (
       <Drawer.Navigator
@@ -101,6 +123,7 @@ function DrawerNavegador() {
         <Drawer.Screen name="Home" component={HomeNavegador} />
         <Drawer.Screen name="Calendario" component={CalendarioNavegador} />
         <Drawer.Screen name="Contacto" component={ContactoNavegar}/>
+        <Drawer.Screen name="Quienes somos" component={QuienesSomosNavegador}/>
       </Drawer.Navigator>
   );
 }
