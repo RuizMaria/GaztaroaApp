@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, FlatList } from 'react-native';
+import { Text, View, ScrollView, FlatList, StyleSheet } from 'react-native';
 import { Card, Icon } from 'react-native-elements';
 import { baseUrl } from './comun/comun';
 import {excursiones as EXCURSIONES, comentarios as COMENTARIOS} from './json-server/db.json';
@@ -9,13 +9,21 @@ import {excursiones as EXCURSIONES, comentarios as COMENTARIOS} from './json-ser
 function RenderExcursion(props) {
 
     const excursion = props.excursion;
-    
+
+    const styles = StyleSheet.create({
+      title: {
+          fontSize:30,
+          textAlign: 'center',
+          marginTop:50
+      }
+  });
         if (excursion != null) {
             return(
             <Card>
-              <Card.Title>{excursion.nombre}</Card.Title>
               <Card.Divider/>
-              <Card.Image source={{uri: baseUrl + excursion.imagen}}></Card.Image>
+              <Card.Image source={{uri: baseUrl + excursion.imagen}}>
+              <Card.Title style={styles.title} >{excursion.nombre}</Card.Title>
+              </Card.Image>
               <Text style={{margin: 20}}>
                 {excursion.descripcion}
               </Text>
