@@ -14,7 +14,9 @@ function RenderItem(props) {
         const styles = StyleSheet.create({
             title: {
                 color:'chocolate',
-                fontSize:30
+                fontSize:30,
+                textAlign: 'center',
+                marginTop:50
             }
         });
         
