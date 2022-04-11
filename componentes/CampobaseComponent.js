@@ -145,7 +145,7 @@ function DrawerNavegador() {
       screenOptions={{
         headerShown: false,
         drawerStyle: {
-        backgroundColor: 'colorGaztaroaClaro',
+        backgroundColor: '#c2d3da',
         },
       }}
       >
@@ -161,9 +161,42 @@ function DrawerNavegador() {
             )
           }}
         />
-        <Drawer.Screen name="Calendario" component={CalendarioNavegador} />
-        <Drawer.Screen name="Contacto" component={ContactoNavegar}/>
-        <Drawer.Screen name="Quienes somos" component={QuienesSomosNavegador}/>
+        <Drawer.Screen name="Calendario" component={CalendarioNavegador} 
+          options={{
+            drawerIcon: ({ tintColor}) => (
+              <Icon
+              name='calendar'
+              type='font-awesome'            
+              size={24}
+              color={tintColor}
+              />
+            )
+          }}   
+        />
+        <Drawer.Screen name="Contacto" component={ContactoNavegar}
+          options={{
+            drawerIcon: ({ tintColor}) => (
+              <Icon
+              name='address-card'
+              type='font-awesome'            
+              size={24}
+              color={tintColor}
+              />
+            )
+          }} 
+        />
+        <Drawer.Screen name="Quienes somos" component={QuienesSomosNavegador}
+          options={{
+            drawerIcon: ({ tintColor}) => (
+              <Icon
+              name='info-circle'
+              type='font-awesome'            
+              size={24}
+              color={tintColor}
+              />
+            )
+          }} 
+        />
       </Drawer.Navigator>
   );
 }
