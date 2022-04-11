@@ -3,10 +3,11 @@ import { Card } from 'react-native-elements';
 import { Text , View } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import { HISTORIA } from './comun/historia';
-import { ACTIVIDADES } from './comun/actividades';
+//import { ACTIVIDADES } from './comun/actividades';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import { baseUrl } from './comun/comun';
+import { actividades as ACTIVIDADES} from './json-server/db.json';
 
 class QuienesSomos extends React.Component{
 
@@ -46,7 +47,7 @@ const renderQuienesSomosItem = ({item, index}) => {
         <ListItem
             key={index}
             bottomDivider>
-            <Avatar source={require('./imagenes/40Años.png')} />
+            <Avatar source={{uri: baseUrl + item.imagen}} />
             <ListItem.Content>
                 <ListItem.Title>{item.nombre}</ListItem.Title>
                 <ListItem.Subtitle>{item.descripcion}</ListItem.Subtitle>

@@ -11,7 +11,6 @@ import Contacto from './ContactoComponent';
 import QuienesSomos from './QuienesSomosComponent';
 import { Icon } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 import { colorGaztaroaClaro } from './comun/comun';
 
 
@@ -146,7 +145,7 @@ function DrawerNavegador() {
       screenOptions={{
         headerShown: false,
         drawerStyle: {
-          backgroundColor: 'colorGaztaroaClaro',
+        backgroundColor: 'colorGaztaroaClaro',
         },
       }}
       >
