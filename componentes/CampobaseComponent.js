@@ -2,18 +2,23 @@ import React, { Component } from 'react';
 import Constants from 'expo-constants';
 import Calendario from './CalendarioComponent';
 import DetalleExcursion from './DetalleExcursionComponent';
-import { View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { View, StyleSheet, Image, Text  } from 'react-native';
+import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from './HomeComponent';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator,DrawerContentScrollView, DrawerItemList  } from '@react-navigation/drawer';
 import Contacto from './ContactoComponent'; 
 import QuienesSomos from './QuienesSomosComponent';
+import { Icon } from 'react-native-elements';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { colorGaztaroaClaro } from './comun/comun';
+
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-function CalendarioNavegador() {
+function CalendarioNavegador({navigation}) {
   return (
     <Stack.Navigator
       initialRouteName="Calendario"
@@ -22,13 +27,16 @@ function CalendarioNavegador() {
         headerTintColor: '#fff',
         headerStyle: { backgroundColor: '#015afc' },
         headerTitleStyle: { color: '#fff' },
+        
       }}
+      
     >
       <Stack.Screen
         name="Calendario"
         component={Calendario}
         options={{
           title: 'Calendario Gaztaroa',
+          headerLeft: () => (<Icon name="menu" size={28} color= 'white' onPress={ () => navigation.dispatch(DrawerActions.toggleDrawer()) }/>),
         }}
       />
       <Stack.Screen
@@ -42,7 +50,7 @@ function CalendarioNavegador() {
   );
 }
 
-function HomeNavegador() {
+function HomeNavegador({navigation}) {
   return (
     <Stack.Navigator
       initialRouteName="Home"
@@ -51,6 +59,7 @@ function HomeNavegador() {
         headerTintColor: '#fff',
         headerStyle: { backgroundColor: '#015afc' },
         headerTitleStyle: { color: '#fff' },
+        headerLeft: () => (<Icon name="menu" size={28} color= 'white' onPress={ () => navigation.dispatch(DrawerActions.toggleDrawer()) }/>),
       }}
       >
       <Stack.Screen
@@ -64,7 +73,7 @@ function HomeNavegador() {
   );
 }
 
-function ContactoNavegar(){
+function ContactoNavegar({navigation}){
   return(
     <Stack.Navigator
       initalRouteName = "Contacto"
@@ -73,6 +82,7 @@ function ContactoNavegar(){
       headerTintColor: '#fff',
       headerStyle: { backgroundColor: '#015afc' },
       headerTitleStyle: { color: '#fff' },
+      headerLeft: () => (<Icon name="menu" size={28} color= 'white' onPress={ () => navigation.dispatch(DrawerActions.toggleDrawer()) }/>),
     }}
     >
     <Stack.Screen
@@ -87,7 +97,7 @@ function ContactoNavegar(){
   );
 }
 
-function QuienesSomosNavegador(){
+function QuienesSomosNavegador({navigation}){
   return(
     <Stack.Navigator
       initialRouteName="QuienesSomos"
@@ -96,6 +106,7 @@ function QuienesSomosNavegador(){
       headerTintColor: '#fff',
       headerStyle: { backgroundColor: '#015afc' },
       headerTitleStyle: { color: '#fff' },
+      headerLeft: () => (<Icon name="menu" size={28} color= 'white' onPress={ () => navigation.dispatch(DrawerActions.toggleDrawer()) }/>),
       }}
     >
     <Stack.Screen
@@ -109,18 +120,48 @@ function QuienesSomosNavegador(){
   );
 }
 
+function CustomDrawerContent(props) {
+  return(
+    <DrawerContentScrollView {...props}>
+      <SafeAreaView style={styles.container} forceInset={{ top: 'always', horizontal: 'never' }}>
+        <View style={styles.drawerHeader}>
+          <View style={{flex:1}}>
+          <Image source={require('./imagenes/logo.png')} style={styles.drawerImage} />
+          </View>
+          <View style={{flex: 2}}>
+            <Text style={styles.drawerHeaderText} > Gaztaroa</Text>
+          </View>
+        </View>
+        <DrawerItemList {...props} />
+      </SafeAreaView>
+    </DrawerContentScrollView>
+  );
+}
+
 function DrawerNavegador() {
   return (
       <Drawer.Navigator
       initialRouteName="Home"
+      drawerContent={props => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerShown: false,
         drawerStyle: {
-          backgroundColor: '#c2d3da',
+          backgroundColor: 'colorGaztaroaClaro',
         },
       }}
       >
-        <Drawer.Screen name="Home" component={HomeNavegador} />
+        <Drawer.Screen name="Home" component={HomeNavegador} 
+          options={{
+            drawerIcon: ({ tintColor}) => (
+              <Icon
+              name='home'
+              type='font-awesome'            
+              size={24}
+              color={tintColor}
+              />
+            )
+          }}
+        />
         <Drawer.Screen name="Calendario" component={CalendarioNavegador} />
         <Drawer.Screen name="Contacto" component={ContactoNavegar}/>
         <Drawer.Screen name="Quienes somos" component={QuienesSomosNavegador}/>
@@ -142,5 +183,29 @@ class Campobase extends Component {
     );
 }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  drawerHeader: {
+    backgroundColor: '#015afc',
+    height: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    flexDirection: 'row'
+  },
+  drawerHeaderText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold'
+  },
+  drawerImage: {
+    margin: 10,
+    width: 80,
+    height: 60
+  }
+});
 
 export default Campobase;
