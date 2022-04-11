@@ -7,6 +7,7 @@ import { ACTIVIDADES } from './comun/actividades';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+
 class QuienesSomos extends React.Component{
 
     constructor(props) {
