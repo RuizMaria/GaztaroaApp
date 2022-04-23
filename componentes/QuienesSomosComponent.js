@@ -8,16 +8,26 @@ import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { baseUrl } from './comun/comun';
 import { actividades as ACTIVIDADES} from './json-server/db.json';
+import { connect } from 'react-redux';
+
+
+const mapStateToProps = state => {
+    return {
+      actividades: state.actividades
+    }
+  }
+
+
 
 class QuienesSomos extends React.Component{
 
     constructor(props) {
         super(props);
         this.state = {
-            actividades: ACTIVIDADES,
+            //actividades: ACTIVIDADES,
             historia: HISTORIA
         };
-    }
+    } 
 
 
 render(){
@@ -65,7 +75,8 @@ return (
             <Card.Divider/>
             <SafeAreaView>
                 <FlatList
-                    data = {this.state.actividades}
+                    data = {this.props.actividades.actividades}
+                    //data = {this.state.actividades}
                     renderItem = {renderQuienesSomosItem}
                     keyExtractor={item => item.id.toString()}
                 />
@@ -79,4 +90,5 @@ return (
 }
 }
 
-export default QuienesSomos; 
+//export default QuienesSomos; 
+export default connect(mapStateToProps)(QuienesSomos);

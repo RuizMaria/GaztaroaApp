@@ -1,21 +1,66 @@
 import React, { Component } from 'react';
 import Constants from 'expo-constants';
-import Calendario from './CalendarioComponent';
-import DetalleExcursion from './DetalleExcursionComponent';
 import { View, StyleSheet, Image, Text  } from 'react-native';
 import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Home from './HomeComponent';
 import { createDrawerNavigator,DrawerContentScrollView, DrawerItemList  } from '@react-navigation/drawer';
-import Contacto from './ContactoComponent'; 
-import QuienesSomos from './QuienesSomosComponent';
 import { Icon } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { colorGaztaroaClaro } from './comun/comun';
-import { colorGaztaroaOscuro } from './comun/comun'; 
+import { colorGaztaroaClaro, colorGaztaroaOscuro} from './comun/comun';
+import { connect } from 'react-redux';
+import { fetchExcursiones, fetchComentarios, fetchCabeceras, fetchActividades } from './redux/ActionCreators';
+
+import Calendario from './CalendarioComponent';
+import DetalleExcursion from './DetalleExcursionComponent';
+import Home from './HomeComponent';
+import Contacto from './ContactoComponent'; 
+import QuienesSomos from './QuienesSomosComponent';
+
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+
+// commit09 Redux
+const mapStateToProps = state => {
+  return {
+    excursiones: state.excursiones,
+    comentarios: state.comentarios,
+    cabeceras: state.cabeceras,
+    actividades: state.actividades
+  }
+}
+const mapDispatchToProps = dispatch => ({
+  fetchExcursiones: () => dispatch(fetchExcursiones()),
+  fetchComentarios: () => dispatch(fetchComentarios()),
+  fetchCabeceras: () => dispatch(fetchCabeceras()),
+  fetchActividades: () => dispatch(fetchActividades()),
+})
+
+// commit09 Redux
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  drawerHeader: {
+    backgroundColor: colorGaztaroaOscuro,
+    height: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    flexDirection: 'row'
+  },
+  drawerHeaderText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold'
+  },
+  drawerImage: {
+    margin: 10,
+    width: 80,
+    height: 60
+  }
+});
 
 function CalendarioNavegador({navigation}) {
   return (
@@ -35,7 +80,9 @@ function CalendarioNavegador({navigation}) {
         component={Calendario}
         options={{
           title: 'Calendario Gaztaroa',
-          headerLeft: () => (<Icon name="menu" size={28} color= 'white' onPress={ () => navigation.dispatch(DrawerActions.toggleDrawer()) }/>),
+          headerLeft: () => (<Icon name="menu" size={28} color= 'white' 
+          onPress={ () => navigation.dispatch(DrawerActions.toggleDrawer()) }/>),
+          //onPress={ () => navigation.navigate("Calendario")}/>),
         }}
       />
       <Stack.Screen
@@ -50,6 +97,7 @@ function CalendarioNavegador({navigation}) {
 }
 
 function HomeNavegador({navigation}) {
+
   return (
     <Stack.Navigator
       initialRouteName="Home"
@@ -204,6 +252,13 @@ function DrawerNavegador() {
 
 class Campobase extends Component {
 
+  componentDidMount() {
+    this.props.fetchExcursiones();
+    this.props.fetchComentarios();
+    this.props.fetchCabeceras();
+    this.props.fetchActividades();
+  }
+
   render() {
 
     return (
@@ -216,28 +271,7 @@ class Campobase extends Component {
 }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  drawerHeader: {
-    backgroundColor: colorGaztaroaOscuro,
-    height: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    flexDirection: 'row'
-  },
-  drawerHeaderText: {
-    color: 'white',
-    fontSize: 24,
-    fontWeight: 'bold'
-  },
-  drawerImage: {
-    margin: 10,
-    width: 80,
-    height: 60
-  }
-});
 
-export default Campobase;
+
+//export default Campobase;
+export default connect(mapStateToProps, mapDispatchToProps)(Campobase);
