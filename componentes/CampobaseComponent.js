@@ -8,7 +8,7 @@ import { Icon } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colorGaztaroaClaro, colorGaztaroaOscuro} from './comun/comun';
 import { connect } from 'react-redux';
-import { fetchExcursiones, fetchComentarios, fetchCabeceras, fetchActividades } from './redux/ActionCreators';
+import { fetchExcursiones, fetchComentarios, fetchCabeceras, fetchActividades } from '../redux/ActionCreators';
 
 import Calendario from './CalendarioComponent';
 import DetalleExcursion from './DetalleExcursionComponent';

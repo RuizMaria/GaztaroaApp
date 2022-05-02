@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { ListItem, Avatar } from 'react-native-elements';
 import { SafeAreaView, FlatList } from 'react-native';
-//import { EXCURSIONES } from './comun/excursiones';
-import { baseUrl } from './comun/comun';
-//import {cabeceras,excursiones as EXCURSIONES} from './json-server/db.json';
 import { connect } from 'react-redux';
+import { baseUrl } from './comun/comun';
+import { IndicadorActividad } from './IndicadorActividadComponent';
+
 
 const mapStateToProps = state => {
     return {
@@ -14,12 +14,7 @@ const mapStateToProps = state => {
 
 
 class Calendario extends Component {
-  /*   constructor(props) {
-        super(props);
-        this.state = {
-            excursiones: EXCURSIONES
-        };
-    } */
+
 
     render(){
 
@@ -40,17 +35,30 @@ class Calendario extends Component {
         );
     };
 
-    return (
-        <SafeAreaView>
-            <FlatList 
-                data={this.props.excursiones.excursiones}
-                renderItem={renderCalendarioItem}
-                keyExtractor={item => item.id.toString()}
-            />
-        </SafeAreaView>
-    );
+    if (this.props.excursiones.isLoading) {
+        return(
+            <IndicadorActividad />
+        );
+    } else if (this.props.excursiones.errMess) {
+        return(
+            <View>
+            <Text>{this.props.excursiones.errMess}</Text>
+            </View>
+        );
+    } else {
+
+
+        return (
+            <SafeAreaView>
+                <FlatList 
+                    data={this.props.excursiones.excursiones}
+                    renderItem={renderCalendarioItem}
+                    keyExtractor={item => item.id.toString()}
+                />
+            </SafeAreaView>
+        );
+        }
     }
 }
 
-//export default Calendario;
 export default connect(mapStateToProps)(Calendario); 

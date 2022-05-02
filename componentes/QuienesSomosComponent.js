@@ -1,15 +1,13 @@
 import React from 'react';
 import { Card } from 'react-native-elements';
-import { Text , View } from 'react-native';
+import { Text , View, ScrollView } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import { HISTORIA } from './comun/historia';
-//import { ACTIVIDADES } from './comun/actividades';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+//import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { baseUrl } from './comun/comun';
-import { actividades as ACTIVIDADES} from './json-server/db.json';
 import { connect } from 'react-redux';
-
+import { IndicadorActividad } from './IndicadorActividadComponent'
 
 const mapStateToProps = state => {
     return {
@@ -24,7 +22,6 @@ class QuienesSomos extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            //actividades: ACTIVIDADES,
             historia: HISTORIA
         };
     } 
@@ -66,29 +63,43 @@ const renderQuienesSomosItem = ({item, index}) => {
     );
 };
 
-return (
-    <ScrollView>
-        <RenderHistoria historia={this.state.historia[0]}/>
+if (this.props.actividades.isLoading) {
+    return(
+        <ScrollView>
+            <Historia />
+                <Card>
+                    <Card.Title>"Actividades y recursos"</Card.Title>
+                    <Card.Divider/>
+                    <IndicadorActividad />
+                </Card>
+            </ScrollView>
+    );
+} else if (this.props.actividades.errMess) {
+    return(
+        <View>
+        <Text>{this.props.actividades.errMess}</Text>
+        </View>
+    );
+} else {
 
-        <Card>
-            <Card.Title>Actividades y recursos</Card.Title>
-            <Card.Divider/>
-            <SafeAreaView>
-                <FlatList
-                    data = {this.props.actividades.actividades}
-                    //data = {this.state.actividades}
-                    renderItem = {renderQuienesSomosItem}
-                    keyExtractor={item => item.id.toString()}
-                />
-            </SafeAreaView>
-        </Card>
 
-    </ScrollView>
-
-)
-
+    return (
+        <ScrollView>
+        <Historia  />
+                <Card>
+                <Card.Title>"Actividades y recursos"</Card.Title>
+                <Card.Divider/>
+                <SafeAreaView>
+                    {this.props.actividades.actividades.map((item, index) => (
+                        renderActividadesItem(item, index)
+                    ))
+                    }
+                </SafeAreaView>
+                </Card>
+        </ScrollView>
+    )
+    }
 }
 }
 
-//export default QuienesSomos; 
 export default connect(mapStateToProps)(QuienesSomos);
