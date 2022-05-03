@@ -18,3 +18,6 @@ export const favoritos = (state = {favoritos: []}, action) => {
         return state;
     }
 };
+
+
+
