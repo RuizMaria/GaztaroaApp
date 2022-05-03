@@ -4,6 +4,7 @@ import { Card, Icon, Rating, Input } from 'react-native-elements';
 import { baseUrl } from './comun/comun';
 import { connect } from 'react-redux';
 import { postFavorito } from '../redux/ActionCreators';
+import { postComentario } from '../redux/ActionCreators';
 import { colorGaztaroaClaro, colorGaztaroaOscuro} from './comun/comun';
 
 const mapStateToProps = state => {
@@ -14,7 +15,8 @@ const mapStateToProps = state => {
   }
 }
 const mapDispatchToProps = dispatch => ({
-    postFavorito: (excursionId) => dispatch(postFavorito(excursionId))
+    postFavorito: (excursionId) => dispatch(postFavorito(excursionId)),
+    postComentario: (excursionId, valoracion, autor, comentario) => dispatch(postComentario(excursionId, valoracion, autor, comentario))
 })
 
 
@@ -50,10 +52,12 @@ function RenderComentario(props) {
 
 function RenderExcursion(props) {
 
-   const [showModal, setShowModal] = useState(false);
-   //const [valoracion, setValoracion] = useState(3.5);
+   const [autor, setAutor] = useState(" ");
+   const [valoracion, setValoracion] = useState(3.5);
+   const [comentario, setComentario] = useState(" ");
     const excursion = props.excursion;
     
+    const modal = props.modal;
     
         if (excursion != null) {
             return(
@@ -79,53 +83,11 @@ function RenderExcursion(props) {
                     name = {'pencil'}
                     type='font-awesome'
                     color ='#0000ff'
-                    onPress={()=> setShowModal(!showModal)}
+                    onPress={()=> props.onPress2()}
 
               />
               </View>
-              <Modal
-                animationType = {"slide"} 
-                transparent = {false}
-                visible = {showModal}
-                onDismiss = {() =>setShowModal(false)}
-                onRequestClose = {() => setShowModal(!showModal)}
-              >
-                  <View style={{justiftyContent:"center", alignItems:"center"}}>
-                      <Rating
-                        showRating
-                        name="hover-feedback"
-                        startingValue={3}
-                        //onFinishRating={rating => {console.log(rating); this.setState({ valoracion: rating })}}
-                        onFinishRating={rating => {console.log(rating)}}
-                       //onFinishRating = {this.ratingValoracion}
-                      />
-                      <Input
-                        //placeholder={this.state.autor}
-                        leftIcon={{ type: 'font-awesome', name: 'user'}}
-                        //onChangeText={value => this.setState({ autor: value })}
-                      />
-                      <Input
-                        //placeholder={this.state.comentario}
-                        leftIcon={{ type: 'font-awesome', name: 'comment'}}
-                        //onChangeText={value => this.setState({ comentario: value })}
-                      />
-                      <Button
-                        //onPress = {() =>{this.gestionarComentario(excursionId,this.state.valoracion,this.state.autor,this.state.comentario); this.resetForm();}}
-                        color={colorGaztaroaOscuro}
-                        title="ENVIAR" 
-                        onPress={()=> setShowModal(!showModal)}
-                      />
-                      <>
-                      </>
-                      <Button
-                        //onPress = {() =>{this.toggleModal(); this.resetForm();}}
-                        color={colorGaztaroaOscuro}
-                        title="CANCELAR" 
-                        onPress={()=> setShowModal(!showModal)}
-
-                      />
-                  </View>
-              </Modal>
+              
             </Card>
             );
         }
@@ -136,17 +98,42 @@ function RenderExcursion(props) {
 
 class DetalleExcursion extends Component {
 
+constructor(props) {
+    super(props);
+    this.state = {
+        valoracion: 3,
+        autor: '',
+        comentario: '',
+        showModal: false
+    }
+} 
+    
+toggleModal() {
+    this.setState({showModal: !this.state.showModal});
+}
+
+resetForm() {
+    this.setState({
+        valoracion: 3,
+        autor: '',
+        comentario: '',
+        dia: '',
+        showModal: false
+    });
+  } 
+  
 
   marcarFavorito(excursionId) {
     
     this.props.postFavorito(excursionId);
   }
+
+  gestionarComentario(excursionId, valoracion, autor, comentario) {
+    console.log(JSON.stringify(this.state));
+    this.props.postComentario(excursionId, valoracion, autor, comentario);
+    this.toggleModal();
+  }
   
-  //state = {showModal: false}
-
- 
-
-
 
   render(){
       const {excursionId} = this.props.route.params;
@@ -156,8 +143,50 @@ class DetalleExcursion extends Component {
             excursion={this.props.excursiones.excursiones[+excursionId]} 
             favorita={(this.props.favoritos.favoritos).some(el => el === excursionId)}
             onPress={() => this.marcarFavorito(excursionId)}
-            //modal = {this.state.showModal}
+            onPress2={()=>this.toggleModal()}
+            //onPressReset={()=>this.resetForm()}
+            //onPressEnviar={()=>this.gestionarComentario(excursionId, valoracion, autor, comentario)}
+            modal = {this.state.showModal}
           />
+          <Modal
+                animationType = {"slide"} 
+                transparent = {false}
+                visible = {this.state.showModal}
+                onDismiss = {() => this.toggleModal}
+                onRequestClose = {() =>  this.toggleModal}
+              >
+                  <View style={{justiftyContent:"center", alignItems:"center"}}>
+                      <Rating
+                        showRating
+                        name="hover-feedback"
+                        startingValue={3}
+                        onFinishRating={rating => {console.log(rating); this.setState({ valoracion: rating })}}
+                      />
+                      <Input
+                        //placeholder={this.state.autor}
+                        leftIcon={{ type: 'font-awesome', name: 'user'}}
+                        onChangeText={value => this.setState({ autor: value })}
+                      />
+                      <Input
+                        //placeholder={this.state.comentario}
+                        leftIcon={{ type: 'font-awesome', name: 'comment'}}
+                        onChangeText={value => this.setState({ comentario: value })}
+                      />
+                      <Button
+                        color={colorGaztaroaOscuro}
+                        title="ENVIAR" 
+                        onPress={()=>  {console.log(this.state.autor);this.gestionarComentario(excursionId,this.state.valoracion,this.state.autor,this.state.comentario); this.resetForm();}}
+                      />
+                      <>
+                      </>
+                      <Button
+                        color={colorGaztaroaOscuro}
+                        title="CANCELAR" 
+                        onPress={()=> {this.toggleModal(); this.resetForm()}}
+
+                      />
+                  </View>
+              </Modal>
           <RenderComentario 
           comentarios={this.props.comentarios.comentarios.filter((comentario) => comentario.excursionId === excursionId)}
           />
