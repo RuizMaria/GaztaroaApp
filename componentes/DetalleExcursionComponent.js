@@ -52,10 +52,10 @@ function RenderComentario(props) {
 
 function RenderExcursion(props) {
 
-   const [autor, setAutor] = useState(" ");
-   const [valoracion, setValoracion] = useState(3.5);
-   const [comentario, setComentario] = useState(" ");
-    const excursion = props.excursion;
+   //const [autor, setAutor] = useState(" ");
+   //const [valoracion, setValoracion] = useState(3.5);
+   //const [comentario, setComentario] = useState(" ");
+  const excursion = props.excursion;
     
     const modal = props.modal;
     
@@ -68,7 +68,7 @@ function RenderExcursion(props) {
               <Text style={{margin: 20}}>
                 {excursion.descripcion}
               </Text>
-              <View style={{justiftyContent:"center", alignItems:"center"}}>
+              <View style={{flex:1,flexDirection:"row",justiftyContent:"center", alignItems:"center",paddingLeft:100}}>
               <Icon
                   raised
                   reverse
@@ -84,7 +84,6 @@ function RenderExcursion(props) {
                     type='font-awesome'
                     color ='#0000ff'
                     onPress={()=> props.onPress2()}
-
               />
               </View>
               
@@ -144,9 +143,6 @@ resetForm() {
             favorita={(this.props.favoritos.favoritos).some(el => el === excursionId)}
             onPress={() => this.marcarFavorito(excursionId)}
             onPress2={()=>this.toggleModal()}
-            //onPressReset={()=>this.resetForm()}
-            //onPressEnviar={()=>this.gestionarComentario(excursionId, valoracion, autor, comentario)}
-            modal = {this.state.showModal}
           />
           <Modal
                 animationType = {"slide"} 
@@ -163,15 +159,14 @@ resetForm() {
                         onFinishRating={rating => {console.log(rating); this.setState({ valoracion: rating })}}
                       />
                       <Input
-                        //placeholder={this.state.autor}
                         leftIcon={{ type: 'font-awesome', name: 'user'}}
                         onChangeText={value => this.setState({ autor: value })}
                       />
                       <Input
-                        //placeholder={this.state.comentario}
                         leftIcon={{ type: 'font-awesome', name: 'comment'}}
                         onChangeText={value => this.setState({ comentario: value })}
                       />
+                      <View style={{justiftyContent:"space-around",flexDirection:"column"}}>
                       <Button
                         color={colorGaztaroaOscuro}
                         title="ENVIAR" 
@@ -183,8 +178,8 @@ resetForm() {
                         color={colorGaztaroaOscuro}
                         title="CANCELAR" 
                         onPress={()=> {this.toggleModal(); this.resetForm()}}
-
                       />
+                      </View>
                   </View>
               </Modal>
           <RenderComentario 
