@@ -1,7 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
-import { colorGaztaroaOscuro } from './comun/comun';
-
+import { colorGaztaroaOscuro } from '../comun/comun';
 export const IndicadorActividad = () => {
     return(
         <View style={styles.indicadorView} >
@@ -21,4 +20,4 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: 'bold'
     }
-}); 
+});

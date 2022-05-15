@@ -1,8 +1,9 @@
 import * as ActionTypes from './ActionTypes';
-import { baseUrl } from '../componentes/comun/comun';
+import { baseUrl } from '../comun/comun';
+import { favoritos } from './favoritos';
 
 export const fetchComentarios = () => (dispatch) => {
-    return fetch(baseUrl + 'comentarios')
+    return fetch(baseUrl + 'comentarios.json')
     .then(response => {
         if (response.ok) {
           return response;
@@ -35,7 +36,7 @@ export const fetchExcursiones = () => (dispatch) => {
 
     dispatch(excursionesLoading());
 
-    return fetch(baseUrl + 'excursiones')
+    return fetch(baseUrl + 'excursiones.json')
     .then(response => {
         if (response.ok) {
           return response;
@@ -72,7 +73,7 @@ export const fetchCabeceras = () => (dispatch) => {
     
     dispatch(cabecerasLoading());
 
-    return fetch(baseUrl + 'cabeceras')
+    return fetch(baseUrl + 'cabeceras.json')
     .then(response => {
         if (response.ok) {
             return response;
@@ -109,7 +110,7 @@ export const fetchActividades = () => (dispatch) => {
     
     dispatch(actividadesLoading());
 
-    return fetch(baseUrl + 'actividades')
+    return fetch(baseUrl + 'actividades.json')
     .then(response => {
         if (response.ok) {
             return response;
@@ -154,7 +155,6 @@ export const addFavorito = (excursionId) => ({
     payload: excursionId
 }
 );
-
 export const postComentario = (excursionId, valoracion, autor, comentario) => (dispatch) => {
     var dia = new Date();
     setTimeout(() => {
@@ -172,3 +172,19 @@ export const addComentario = (excursionId, valoracion, autor, comentario,dia) =>
 
 }
 );
+
+export const iniciarSesion = (user) => (
+    {
+    type: ActionTypes.INICIAR_SESION,
+    payload: user
+    }
+
+);
+export const cerrarSesion = () => ({
+    type: ActionTypes.CERRAR_SESION
+}
+);
+
+export const borrarFavoritos = () =>({
+    type: ActionTypes.BORRAR_FAVORITOS
+})

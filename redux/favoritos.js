@@ -13,7 +13,9 @@ export const favoritos = (state = {favoritos: []}, action) => {
                     favoritos: state.favoritos.concat(action.payload)
                 }
            }
-
+        case ActionTypes.BORRAR_FAVORITOS:
+            return{
+                favoritos: []}
         default:
         return state;
     }
